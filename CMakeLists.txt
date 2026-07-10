@@ -37,8 +37,14 @@ endif()
 # Executable
 #---------------------------------------------------------
 add_executable(
-    redix
-    src/main.cpp
+    redix_tests
+    tests/parser_tests.cpp
+)
+
+target_link_libraries(
+    redix_tests
+    PRIVATE
+    redix_core
 )
 
 #---------------------------------------------------------
