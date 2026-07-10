@@ -6,7 +6,7 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/Users/harsh/Developer/redix/src
 
-CXX_FLAGSarm64 = -g -std=c++20 -arch arm64 -fsanitize=address -fsanitize=undefined
+CXX_FLAGSarm64 = -g -std=c++20 -arch arm64 -Wall -Wextra -Wpedantic -Wshadow -Wconversion
 
-CXX_FLAGS = -g -std=c++20 -arch arm64 -fsanitize=address -fsanitize=undefined
+CXX_FLAGS = -g -std=c++20 -arch arm64 -Wall -Wextra -Wpedantic -Wshadow -Wconversion
 

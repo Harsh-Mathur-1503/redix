@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named redix_core
+
+# Build rule for target.
+redix_core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_core
+.PHONY : redix_core
+
+# fast build rule for target.
+redix_core/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/build
+.PHONY : redix_core/fast
+
+#=============================================================================
 # Target rules for targets named redix
 
 # Build rule for target.
@@ -128,6 +141,19 @@ redix: cmake_check_build_system
 redix/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/build
 .PHONY : redix/fast
+
+#=============================================================================
+# Target rules for targets named redix_tests
+
+# Build rule for target.
+redix_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_tests
+.PHONY : redix_tests
+
+# fast build rule for target.
+redix_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/build
+.PHONY : redix_tests/fast
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -153,6 +179,54 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/parser/parser.o: src/parser/parser.cpp.o
+.PHONY : src/parser/parser.o
+
+# target to build an object file
+src/parser/parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/parser/parser.cpp.o
+.PHONY : src/parser/parser.cpp.o
+
+src/parser/parser.i: src/parser/parser.cpp.i
+.PHONY : src/parser/parser.i
+
+# target to preprocess a source file
+src/parser/parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/parser/parser.cpp.i
+.PHONY : src/parser/parser.cpp.i
+
+src/parser/parser.s: src/parser/parser.cpp.s
+.PHONY : src/parser/parser.s
+
+# target to generate assembly for a file
+src/parser/parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/parser/parser.cpp.s
+.PHONY : src/parser/parser.cpp.s
+
+tests/parser_tests.o: tests/parser_tests.cpp.o
+.PHONY : tests/parser_tests.o
+
+# target to build an object file
+tests/parser_tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/tests/parser_tests.cpp.o
+.PHONY : tests/parser_tests.cpp.o
+
+tests/parser_tests.i: tests/parser_tests.cpp.i
+.PHONY : tests/parser_tests.i
+
+# target to preprocess a source file
+tests/parser_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/tests/parser_tests.cpp.i
+.PHONY : tests/parser_tests.cpp.i
+
+tests/parser_tests.s: tests/parser_tests.cpp.s
+.PHONY : tests/parser_tests.s
+
+# target to generate assembly for a file
+tests/parser_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/tests/parser_tests.cpp.s
+.PHONY : tests/parser_tests.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +236,17 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... redix"
+	@echo "... redix_core"
+	@echo "... redix_tests"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/parser/parser.o"
+	@echo "... src/parser/parser.i"
+	@echo "... src/parser/parser.s"
+	@echo "... tests/parser_tests.o"
+	@echo "... tests/parser_tests.i"
+	@echo "... tests/parser_tests.s"
 .PHONY : help
 
 

@@ -95,6 +95,7 @@ redix_EXTERNAL_OBJECTS =
 
 /Users/harsh/Developer/redix/bin/redix: CMakeFiles/redix.dir/src/main.cpp.o
 /Users/harsh/Developer/redix/bin/redix: CMakeFiles/redix.dir/build.make
+/Users/harsh/Developer/redix/bin/redix: libredix_core.a
 /Users/harsh/Developer/redix/bin/redix: CMakeFiles/redix.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/harsh/Developer/redix/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /Users/harsh/Developer/redix/bin/redix"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/redix.dir/link.txt --verbose=$(VERBOSE)

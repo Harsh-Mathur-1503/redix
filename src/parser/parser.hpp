@@ -1,11 +1,16 @@
 #pragma once
 
+#include "command.hpp"
+
 #include <string>
 
-#include "command.hpp"
+namespace redix
+{
 
 class Parser
 {
 public:
-    Command parse(const std::string& input) const;
+    [[nodiscard]] Command parse(const std::string& input) const;
 };
+
+} // namespace redix

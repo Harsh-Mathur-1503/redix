@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 
+namespace redix
+{
+
 enum class CommandType
 {
     Set,
@@ -13,12 +16,20 @@ enum class CommandType
     Unknown
 };
 
+enum class ParseStatus
+{
+    Success,
+    EmptyInput,
+    UnknownCommand,
+    InvalidArity
+};
+
 struct Command
 {
-    CommandType type = CommandType::Unknown;
-
-    std::string key;
-    std::string value;
+    ParseStatus status = ParseStatus::Success;
+    CommandType type   = CommandType::Unknown;
 
     std::vector<std::string> arguments;
 };
+
+} // namespace redix

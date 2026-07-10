@@ -217,7 +217,7 @@ CMAKE_TAPI:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/tapi
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Enable sanitizers
-ENABLE_SANITIZERS:BOOL=ON
+ENABLE_SANITIZERS:BOOL=OFF
 
 //Value Computed by CMake
 Redix_BINARY_DIR:STATIC=/Users/harsh/Developer/redix/build

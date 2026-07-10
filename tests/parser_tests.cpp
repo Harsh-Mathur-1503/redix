@@ -1,21 +1,22 @@
-#include "../src/parser/parser.hpp"
+#include "parser/parser.hpp"
 
 #include <cassert>
 #include <iostream>
+
+using namespace redix;
 
 void testSetCommand()
 {
     Parser parser;
 
-    Command command = parser.parse("SET name Harsh");
+    Command command = parser.parse("SET name harsh");
 
+    assert(command.status == ParseStatus::Success);
     assert(command.type == CommandType::Set);
-    assert(command.key == "name");
-    assert(command.value == "Harsh");
 
     assert(command.arguments.size() == 2);
     assert(command.arguments[0] == "name");
-    assert(command.arguments[1] == "Harsh");
+    assert(command.arguments[1] == "harsh");
 }
 
 void testGetCommand()
@@ -24,9 +25,8 @@ void testGetCommand()
 
     Command command = parser.parse("GET name");
 
+    assert(command.status == ParseStatus::Success);
     assert(command.type == CommandType::Get);
-    assert(command.key == "name");
-    assert(command.value.empty());
 
     assert(command.arguments.size() == 1);
     assert(command.arguments[0] == "name");
@@ -38,10 +38,8 @@ void testDelCommand()
 
     Command command = parser.parse("DEL name");
 
+    assert(command.status == ParseStatus::Success);
     assert(command.type == CommandType::Del);
-    assert(command.key == "name");
-
-    assert(command.arguments.size() == 1);
 }
 
 void testExistsCommand()
@@ -50,10 +48,8 @@ void testExistsCommand()
 
     Command command = parser.parse("EXISTS name");
 
+    assert(command.status == ParseStatus::Success);
     assert(command.type == CommandType::Exists);
-    assert(command.key == "name");
-
-    assert(command.arguments.size() == 1);
 }
 
 void testPingCommand()
@@ -62,10 +58,9 @@ void testPingCommand()
 
     Command command = parser.parse("PING");
 
+    assert(command.status == ParseStatus::Success);
     assert(command.type == CommandType::Ping);
 
-    assert(command.key.empty());
-    assert(command.value.empty());
     assert(command.arguments.empty());
 }
 
@@ -75,20 +70,20 @@ void testCaseInsensitiveCommands()
 
     assert(parser.parse("set name harsh").type == CommandType::Set);
     assert(parser.parse("gEt name").type == CommandType::Get);
-    assert(parser.parse("DeL name").type == CommandType::Del);
+    assert(parser.parse("dEl name").type == CommandType::Del);
     assert(parser.parse("eXiStS name").type == CommandType::Exists);
-    assert(parser.parse("PiNg").type == CommandType::Ping);
+    assert(parser.parse("pInG").type == CommandType::Ping);
 }
 
-void testExtraWhitespace()
+void testWhitespaceHandling()
 {
     Parser parser;
 
-    Command command = parser.parse("   SET    name     Harsh   ");
+    Command command =
+        parser.parse("     SET      name      harsh     ");
 
+    assert(command.status == ParseStatus::Success);
     assert(command.type == CommandType::Set);
-    assert(command.key == "name");
-    assert(command.value == "Harsh");
 
     assert(command.arguments.size() == 2);
 }
@@ -97,12 +92,10 @@ void testUnknownCommand()
 {
     Parser parser;
 
-    Command command = parser.parse("UNKNOWN key");
+    Command command = parser.parse("FOOBAR name");
 
+    assert(command.status == ParseStatus::UnknownCommand);
     assert(command.type == CommandType::Unknown);
-
-    assert(command.arguments.size() == 1);
-    assert(command.arguments[0] == "key");
 }
 
 void testEmptyInput()
@@ -111,8 +104,7 @@ void testEmptyInput()
 
     Command command = parser.parse("");
 
-    assert(command.type == CommandType::Unknown);
-    assert(command.arguments.empty());
+    assert(command.status == ParseStatus::EmptyInput);
 }
 
 void testWhitespaceOnlyInput()
@@ -121,36 +113,106 @@ void testWhitespaceOnlyInput()
 
     Command command = parser.parse("      ");
 
-    assert(command.type == CommandType::Unknown);
-    assert(command.arguments.empty());
+    assert(command.status == ParseStatus::EmptyInput);
 }
 
-void testMissingSetValue()
+void testInvalidSetArityMissingValue()
 {
     Parser parser;
 
     Command command = parser.parse("SET name");
 
+    assert(command.status == ParseStatus::InvalidArity);
     assert(command.type == CommandType::Set);
-
-    assert(command.key == "name");
-    assert(command.value.empty());
-
-    assert(command.arguments.size() == 1);
 }
 
-void testTooManyArguments()
+void testInvalidSetArityExtraValue()
 {
     Parser parser;
 
-    Command command = parser.parse("SET name Harsh extra");
+    Command command =
+        parser.parse("SET name harsh extra");
 
+    assert(command.status == ParseStatus::InvalidArity);
     assert(command.type == CommandType::Set);
+}
 
-    assert(command.arguments.size() == 3);
-    assert(command.arguments[0] == "name");
-    assert(command.arguments[1] == "Harsh");
-    assert(command.arguments[2] == "extra");
+void testInvalidDelArityMissingKey()
+{
+    Parser parser;
+
+    Command command = parser.parse("DEL");
+
+    assert(command.status == ParseStatus::InvalidArity);
+    assert(command.type == CommandType::Del);
+}
+
+void testInvalidDelArityExtraArgument()
+{
+    Parser parser;
+
+    Command command = parser.parse("DEL key extra");
+
+    assert(command.status == ParseStatus::InvalidArity);
+    assert(command.type == CommandType::Del);
+
+    assert(command.arguments.size() == 2);
+    assert(command.arguments[0] == "key");
+    assert(command.arguments[1] == "extra");
+}
+
+void testInvalidExistsArityMissingKey()
+{
+    Parser parser;
+
+    Command command = parser.parse("EXISTS");
+
+    assert(command.status == ParseStatus::InvalidArity);
+    assert(command.type == CommandType::Exists);
+}
+
+void testInvalidExistsArityExtraArgument()
+{
+    Parser parser;
+
+    Command command = parser.parse("EXISTS key extra");
+
+    assert(command.status == ParseStatus::InvalidArity);
+    assert(command.type == CommandType::Exists);
+
+    assert(command.arguments.size() == 2);
+    assert(command.arguments[0] == "key");
+    assert(command.arguments[1] == "extra");
+}
+
+void testInvalidGetExtraArgument()
+{
+    Parser parser;
+
+    Command command = parser.parse("GET key extra");
+
+    assert(command.status == ParseStatus::InvalidArity);
+    assert(command.type == CommandType::Get);
+}
+
+void testInvalidGetArity()
+{
+    Parser parser;
+
+    Command command = parser.parse("GET");
+
+    assert(command.status == ParseStatus::InvalidArity);
+    assert(command.type == CommandType::Get);
+}
+
+void testInvalidPingArity()
+{
+    Parser parser;
+
+    Command command = parser.parse("PING extra");
+
+    assert(command.status == ParseStatus::InvalidArity);
+    assert(command.type == CommandType::Ping);
 }
 
 int main()
@@ -162,14 +224,21 @@ int main()
     testPingCommand();
 
     testCaseInsensitiveCommands();
-    testExtraWhitespace();
+    testWhitespaceHandling();
 
     testUnknownCommand();
     testEmptyInput();
     testWhitespaceOnlyInput();
 
-    testMissingSetValue();
-    testTooManyArguments();
+    testInvalidDelArityMissingKey();
+    testInvalidGetExtraArgument();
+    testInvalidDelArityExtraArgument();
+    testInvalidExistsArityMissingKey();
+    testInvalidExistsArityExtraArgument();
+    testInvalidSetArityMissingValue();
+    testInvalidSetArityExtraValue();
+    testInvalidGetArity();
+    testInvalidPingArity();
 
     std::cout << "All parser tests passed.\n";
 

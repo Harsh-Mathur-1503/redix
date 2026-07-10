@@ -1,5 +1,4 @@
 CMakeFiles/redix.dir/src/main.cpp.o: \
-  /Library/Developer/CommandLineTools/usr/lib/clang/21/share/asan_ignorelist.txt \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/SDKSettings.json \
   /Users/harsh/Developer/redix/src/main.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
