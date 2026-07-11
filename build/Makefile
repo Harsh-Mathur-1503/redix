@@ -143,17 +143,17 @@ redix/fast:
 .PHONY : redix/fast
 
 #=============================================================================
-# Target rules for targets named redix_tests
+# Target rules for targets named redix_parser_tests
 
 # Build rule for target.
-redix_tests: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_tests
-.PHONY : redix_tests
+redix_parser_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_parser_tests
+.PHONY : redix_parser_tests
 
 # fast build rule for target.
-redix_tests/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/build
-.PHONY : redix_tests/fast
+redix_parser_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_parser_tests.dir/build.make CMakeFiles/redix_parser_tests.dir/build
+.PHONY : redix_parser_tests/fast
 
 #=============================================================================
 # Target rules for targets named redix_storage_tests
@@ -245,7 +245,7 @@ tests/parser_tests.o: tests/parser_tests.cpp.o
 
 # target to build an object file
 tests/parser_tests.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/tests/parser_tests.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_parser_tests.dir/build.make CMakeFiles/redix_parser_tests.dir/tests/parser_tests.cpp.o
 .PHONY : tests/parser_tests.cpp.o
 
 tests/parser_tests.i: tests/parser_tests.cpp.i
@@ -253,7 +253,7 @@ tests/parser_tests.i: tests/parser_tests.cpp.i
 
 # target to preprocess a source file
 tests/parser_tests.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/tests/parser_tests.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_parser_tests.dir/build.make CMakeFiles/redix_parser_tests.dir/tests/parser_tests.cpp.i
 .PHONY : tests/parser_tests.cpp.i
 
 tests/parser_tests.s: tests/parser_tests.cpp.s
@@ -261,7 +261,7 @@ tests/parser_tests.s: tests/parser_tests.cpp.s
 
 # target to generate assembly for a file
 tests/parser_tests.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/tests/parser_tests.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_parser_tests.dir/build.make CMakeFiles/redix_parser_tests.dir/tests/parser_tests.cpp.s
 .PHONY : tests/parser_tests.cpp.s
 
 tests/storage_tests.o: tests/storage_tests.cpp.o
@@ -298,8 +298,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... redix"
 	@echo "... redix_core"
+	@echo "... redix_parser_tests"
 	@echo "... redix_storage_tests"
-	@echo "... redix_tests"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -1,4 +1,3 @@
-
 # Storage Layer Design (v0)
 
 ## Overview
@@ -343,6 +342,23 @@ Assumptions:
 * No concurrent clients
 
 Thread safety may be introduced in future versions.
+
+
+
+## Storage Assumptions
+
+The storage layer treats keys and values as arbitrary strings.
+
+Storage does not enforce protocol-level validation.
+
+Examples:
+
+- Keys are case-sensitive.
+- Values are case-sensitive.
+- Storage does not reject empty strings.
+- Storage does not impose size limits in v0.
+
+Validation of protocol rules is the responsibility of the parser and executor layers.
 
 ---
 

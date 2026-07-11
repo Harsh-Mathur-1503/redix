@@ -116,6 +116,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/redix_core.dir/DependInfo.cmake"
   "CMakeFiles/redix.dir/DependInfo.cmake"
-  "CMakeFiles/redix_tests.dir/DependInfo.cmake"
+  "CMakeFiles/redix_parser_tests.dir/DependInfo.cmake"
   "CMakeFiles/redix_storage_tests.dir/DependInfo.cmake"
   )

@@ -77,12 +77,12 @@ target_link_libraries(
 # ---------------------------------------------------------
 
 add_executable(
-    redix_tests
+    redix_parser_tests
     tests/parser_tests.cpp
 )
 
 target_link_libraries(
-    redix_tests
+    redix_parser_tests
     PRIVATE
     redix_core
 )
@@ -110,7 +110,7 @@ option(ENABLE_SANITIZERS "Enable sanitizers" OFF)
 
 if(ENABLE_SANITIZERS AND CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-    foreach(target redix redix_tests redix_storage_tests)
+    foreach(target redix redix_parser_tests redix_storage_tests)
 
         target_compile_options(
             ${target}
@@ -136,7 +136,7 @@ endif()
 
 set_target_properties(
     redix
-    redix_tests
+    redix_parser_tests
     redix_storage_tests
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY
