@@ -155,6 +155,19 @@ redix_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/build
 .PHONY : redix_tests/fast
 
+#=============================================================================
+# Target rules for targets named redix_storage_tests
+
+# Build rule for target.
+redix_storage_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_storage_tests
+.PHONY : redix_storage_tests
+
+# fast build rule for target.
+redix_storage_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_storage_tests.dir/build.make CMakeFiles/redix_storage_tests.dir/build
+.PHONY : redix_storage_tests/fast
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -203,6 +216,30 @@ src/parser/parser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/parser/parser.cpp.s
 .PHONY : src/parser/parser.cpp.s
 
+src/storage/key_value_store.o: src/storage/key_value_store.cpp.o
+.PHONY : src/storage/key_value_store.o
+
+# target to build an object file
+src/storage/key_value_store.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/storage/key_value_store.cpp.o
+.PHONY : src/storage/key_value_store.cpp.o
+
+src/storage/key_value_store.i: src/storage/key_value_store.cpp.i
+.PHONY : src/storage/key_value_store.i
+
+# target to preprocess a source file
+src/storage/key_value_store.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/storage/key_value_store.cpp.i
+.PHONY : src/storage/key_value_store.cpp.i
+
+src/storage/key_value_store.s: src/storage/key_value_store.cpp.s
+.PHONY : src/storage/key_value_store.s
+
+# target to generate assembly for a file
+src/storage/key_value_store.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/storage/key_value_store.cpp.s
+.PHONY : src/storage/key_value_store.cpp.s
+
 tests/parser_tests.o: tests/parser_tests.cpp.o
 .PHONY : tests/parser_tests.o
 
@@ -227,6 +264,30 @@ tests/parser_tests.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_tests.dir/build.make CMakeFiles/redix_tests.dir/tests/parser_tests.cpp.s
 .PHONY : tests/parser_tests.cpp.s
 
+tests/storage_tests.o: tests/storage_tests.cpp.o
+.PHONY : tests/storage_tests.o
+
+# target to build an object file
+tests/storage_tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_storage_tests.dir/build.make CMakeFiles/redix_storage_tests.dir/tests/storage_tests.cpp.o
+.PHONY : tests/storage_tests.cpp.o
+
+tests/storage_tests.i: tests/storage_tests.cpp.i
+.PHONY : tests/storage_tests.i
+
+# target to preprocess a source file
+tests/storage_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_storage_tests.dir/build.make CMakeFiles/redix_storage_tests.dir/tests/storage_tests.cpp.i
+.PHONY : tests/storage_tests.cpp.i
+
+tests/storage_tests.s: tests/storage_tests.cpp.s
+.PHONY : tests/storage_tests.s
+
+# target to generate assembly for a file
+tests/storage_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_storage_tests.dir/build.make CMakeFiles/redix_storage_tests.dir/tests/storage_tests.cpp.s
+.PHONY : tests/storage_tests.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -237,6 +298,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... redix"
 	@echo "... redix_core"
+	@echo "... redix_storage_tests"
 	@echo "... redix_tests"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
@@ -244,9 +306,15 @@ help:
 	@echo "... src/parser/parser.o"
 	@echo "... src/parser/parser.i"
 	@echo "... src/parser/parser.s"
+	@echo "... src/storage/key_value_store.o"
+	@echo "... src/storage/key_value_store.i"
+	@echo "... src/storage/key_value_store.s"
 	@echo "... tests/parser_tests.o"
 	@echo "... tests/parser_tests.i"
 	@echo "... tests/parser_tests.s"
+	@echo "... tests/storage_tests.o"
+	@echo "... tests/storage_tests.i"
+	@echo "... tests/storage_tests.s"
 .PHONY : help
 
 

@@ -44,6 +44,7 @@ endif()
 add_library(
     redix_core
     src/parser/parser.cpp
+    src/storage/key_value_store.cpp
 )
 
 target_include_directories(
@@ -71,6 +72,10 @@ target_link_libraries(
 # Test Executable
 # ---------------------------------------------------------
 
+# ---------------------------------------------------------
+# Parser Tests
+# ---------------------------------------------------------
+
 add_executable(
     redix_tests
     tests/parser_tests.cpp
@@ -83,6 +88,21 @@ target_link_libraries(
 )
 
 # ---------------------------------------------------------
+# Storage Tests
+# ---------------------------------------------------------
+
+add_executable(
+    redix_storage_tests
+    tests/storage_tests.cpp
+)
+
+target_link_libraries(
+    redix_storage_tests
+    PRIVATE
+    redix_core
+)
+
+# ---------------------------------------------------------
 # Sanitizers
 # ---------------------------------------------------------
 
@@ -90,7 +110,7 @@ option(ENABLE_SANITIZERS "Enable sanitizers" OFF)
 
 if(ENABLE_SANITIZERS AND CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-    foreach(target redix redix_tests)
+    foreach(target redix redix_tests redix_storage_tests)
 
         target_compile_options(
             ${target}
@@ -117,6 +137,7 @@ endif()
 set_target_properties(
     redix
     redix_tests
+    redix_storage_tests
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY
     ${PROJECT_SOURCE_DIR}/bin
