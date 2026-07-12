@@ -119,4 +119,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/redix_parser_tests.dir/DependInfo.cmake"
   "CMakeFiles/redix_storage_tests.dir/DependInfo.cmake"
   "CMakeFiles/redix_executor_tests.dir/DependInfo.cmake"
+  "CMakeFiles/redix_request_handler_tests.dir/DependInfo.cmake"
   )

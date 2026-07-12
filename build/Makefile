@@ -191,6 +191,19 @@ redix_executor_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_executor_tests.dir/build.make CMakeFiles/redix_executor_tests.dir/build
 .PHONY : redix_executor_tests/fast
 
+#=============================================================================
+# Target rules for targets named redix_request_handler_tests
+
+# Build rule for target.
+redix_request_handler_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_request_handler_tests
+.PHONY : redix_request_handler_tests
+
+# fast build rule for target.
+redix_request_handler_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_request_handler_tests.dir/build.make CMakeFiles/redix_request_handler_tests.dir/build
+.PHONY : redix_request_handler_tests/fast
+
 src/core/command_executor.o: src/core/command_executor.cpp.o
 .PHONY : src/core/command_executor.o
 
@@ -214,6 +227,30 @@ src/core/command_executor.s: src/core/command_executor.cpp.s
 src/core/command_executor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/core/command_executor.cpp.s
 .PHONY : src/core/command_executor.cpp.s
+
+src/core/request_handler.o: src/core/request_handler.cpp.o
+.PHONY : src/core/request_handler.o
+
+# target to build an object file
+src/core/request_handler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/core/request_handler.cpp.o
+.PHONY : src/core/request_handler.cpp.o
+
+src/core/request_handler.i: src/core/request_handler.cpp.i
+.PHONY : src/core/request_handler.i
+
+# target to preprocess a source file
+src/core/request_handler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/core/request_handler.cpp.i
+.PHONY : src/core/request_handler.cpp.i
+
+src/core/request_handler.s: src/core/request_handler.cpp.s
+.PHONY : src/core/request_handler.s
+
+# target to generate assembly for a file
+src/core/request_handler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/core/request_handler.cpp.s
+.PHONY : src/core/request_handler.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -335,6 +372,30 @@ tests/parser_tests.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_parser_tests.dir/build.make CMakeFiles/redix_parser_tests.dir/tests/parser_tests.cpp.s
 .PHONY : tests/parser_tests.cpp.s
 
+tests/request_handler_tests.o: tests/request_handler_tests.cpp.o
+.PHONY : tests/request_handler_tests.o
+
+# target to build an object file
+tests/request_handler_tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_request_handler_tests.dir/build.make CMakeFiles/redix_request_handler_tests.dir/tests/request_handler_tests.cpp.o
+.PHONY : tests/request_handler_tests.cpp.o
+
+tests/request_handler_tests.i: tests/request_handler_tests.cpp.i
+.PHONY : tests/request_handler_tests.i
+
+# target to preprocess a source file
+tests/request_handler_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_request_handler_tests.dir/build.make CMakeFiles/redix_request_handler_tests.dir/tests/request_handler_tests.cpp.i
+.PHONY : tests/request_handler_tests.cpp.i
+
+tests/request_handler_tests.s: tests/request_handler_tests.cpp.s
+.PHONY : tests/request_handler_tests.s
+
+# target to generate assembly for a file
+tests/request_handler_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_request_handler_tests.dir/build.make CMakeFiles/redix_request_handler_tests.dir/tests/request_handler_tests.cpp.s
+.PHONY : tests/request_handler_tests.cpp.s
+
 tests/storage_tests.o: tests/storage_tests.cpp.o
 .PHONY : tests/storage_tests.o
 
@@ -372,10 +433,14 @@ help:
 	@echo "... redix_core"
 	@echo "... redix_executor_tests"
 	@echo "... redix_parser_tests"
+	@echo "... redix_request_handler_tests"
 	@echo "... redix_storage_tests"
 	@echo "... src/core/command_executor.o"
 	@echo "... src/core/command_executor.i"
 	@echo "... src/core/command_executor.s"
+	@echo "... src/core/request_handler.o"
+	@echo "... src/core/request_handler.i"
+	@echo "... src/core/request_handler.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -391,6 +456,9 @@ help:
 	@echo "... tests/parser_tests.o"
 	@echo "... tests/parser_tests.i"
 	@echo "... tests/parser_tests.s"
+	@echo "... tests/request_handler_tests.o"
+	@echo "... tests/request_handler_tests.i"
+	@echo "... tests/request_handler_tests.s"
 	@echo "... tests/storage_tests.o"
 	@echo "... tests/storage_tests.i"
 	@echo "... tests/storage_tests.s"

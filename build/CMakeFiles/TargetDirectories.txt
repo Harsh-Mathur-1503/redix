@@ -3,6 +3,7 @@
 /Users/harsh/Developer/redix/build/CMakeFiles/redix_parser_tests.dir
 /Users/harsh/Developer/redix/build/CMakeFiles/redix_storage_tests.dir
 /Users/harsh/Developer/redix/build/CMakeFiles/redix_executor_tests.dir
+/Users/harsh/Developer/redix/build/CMakeFiles/redix_request_handler_tests.dir
 /Users/harsh/Developer/redix/build/CMakeFiles/test.dir
 /Users/harsh/Developer/redix/build/CMakeFiles/edit_cache.dir
 /Users/harsh/Developer/redix/build/CMakeFiles/rebuild_cache.dir
