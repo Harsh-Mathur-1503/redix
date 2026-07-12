@@ -65,6 +65,16 @@ CMAKE_BINARY_DIR = /Users/harsh/Developer/redix/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
+	/opt/homebrew/bin/ctest $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+.PHONY : test/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
@@ -168,6 +178,43 @@ redix_storage_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_storage_tests.dir/build.make CMakeFiles/redix_storage_tests.dir/build
 .PHONY : redix_storage_tests/fast
 
+#=============================================================================
+# Target rules for targets named redix_executor_tests
+
+# Build rule for target.
+redix_executor_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_executor_tests
+.PHONY : redix_executor_tests
+
+# fast build rule for target.
+redix_executor_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_executor_tests.dir/build.make CMakeFiles/redix_executor_tests.dir/build
+.PHONY : redix_executor_tests/fast
+
+src/core/command_executor.o: src/core/command_executor.cpp.o
+.PHONY : src/core/command_executor.o
+
+# target to build an object file
+src/core/command_executor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/core/command_executor.cpp.o
+.PHONY : src/core/command_executor.cpp.o
+
+src/core/command_executor.i: src/core/command_executor.cpp.i
+.PHONY : src/core/command_executor.i
+
+# target to preprocess a source file
+src/core/command_executor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/core/command_executor.cpp.i
+.PHONY : src/core/command_executor.cpp.i
+
+src/core/command_executor.s: src/core/command_executor.cpp.s
+.PHONY : src/core/command_executor.s
+
+# target to generate assembly for a file
+src/core/command_executor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/core/command_executor.cpp.s
+.PHONY : src/core/command_executor.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -240,6 +287,30 @@ src/storage/key_value_store.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_core.dir/build.make CMakeFiles/redix_core.dir/src/storage/key_value_store.cpp.s
 .PHONY : src/storage/key_value_store.cpp.s
 
+tests/command_executor_tests.o: tests/command_executor_tests.cpp.o
+.PHONY : tests/command_executor_tests.o
+
+# target to build an object file
+tests/command_executor_tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_executor_tests.dir/build.make CMakeFiles/redix_executor_tests.dir/tests/command_executor_tests.cpp.o
+.PHONY : tests/command_executor_tests.cpp.o
+
+tests/command_executor_tests.i: tests/command_executor_tests.cpp.i
+.PHONY : tests/command_executor_tests.i
+
+# target to preprocess a source file
+tests/command_executor_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_executor_tests.dir/build.make CMakeFiles/redix_executor_tests.dir/tests/command_executor_tests.cpp.i
+.PHONY : tests/command_executor_tests.cpp.i
+
+tests/command_executor_tests.s: tests/command_executor_tests.cpp.s
+.PHONY : tests/command_executor_tests.s
+
+# target to generate assembly for a file
+tests/command_executor_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_executor_tests.dir/build.make CMakeFiles/redix_executor_tests.dir/tests/command_executor_tests.cpp.s
+.PHONY : tests/command_executor_tests.cpp.s
+
 tests/parser_tests.o: tests/parser_tests.cpp.o
 .PHONY : tests/parser_tests.o
 
@@ -296,10 +367,15 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... test"
 	@echo "... redix"
 	@echo "... redix_core"
+	@echo "... redix_executor_tests"
 	@echo "... redix_parser_tests"
 	@echo "... redix_storage_tests"
+	@echo "... src/core/command_executor.o"
+	@echo "... src/core/command_executor.i"
+	@echo "... src/core/command_executor.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -309,6 +385,9 @@ help:
 	@echo "... src/storage/key_value_store.o"
 	@echo "... src/storage/key_value_store.i"
 	@echo "... src/storage/key_value_store.s"
+	@echo "... tests/command_executor_tests.o"
+	@echo "... tests/command_executor_tests.i"
+	@echo "... tests/command_executor_tests.s"
 	@echo "... tests/parser_tests.o"
 	@echo "... tests/parser_tests.i"
 	@echo "... tests/parser_tests.s"
