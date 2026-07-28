@@ -18,6 +18,12 @@ public:
 
     ~TcpServer();
 
+    TcpServer(const TcpServer&) = delete;
+    TcpServer& operator=(const TcpServer&) = delete;
+
+    TcpServer(TcpServer&&) = delete;
+    TcpServer& operator=(TcpServer&&) = delete;
+
     void run();
 
 private:

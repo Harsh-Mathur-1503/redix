@@ -165,7 +165,7 @@ option(ENABLE_SANITIZERS "Enable sanitizers" OFF)
 
 if(ENABLE_SANITIZERS AND CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-    foreach(target redix redix_parser_tests redix_storage_tests redix_executor_tests redix_request_handler_tests)
+    foreach(target redix redix_core redix_parser_tests redix_storage_tests redix_executor_tests redix_request_handler_tests)
 
         target_compile_options(
             ${target}
