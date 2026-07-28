@@ -353,22 +353,6 @@ These limitations are deliberate to keep each development phase focused.
 - Performance benchmarking
 
 ---
-
-# Learning Objectives
-
-This project is intended to gain practical experience with:
-
-- Modern C++20
-- Systems programming
-- POSIX networking
-- Socket programming
-- Software architecture
-- Testable application design
-- Build systems (CMake)
-- Backend infrastructure fundamentals
-
----
-
 ## License
 
 This project is developed as a learning exercise inspired by Redis. It is not intended to be a production replacement for Redis.
