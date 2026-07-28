@@ -62,6 +62,7 @@ target_include_directories(
 add_executable(
     redix
     src/main.cpp
+    src/networking/tcp_server.cpp
 )
 
 target_link_libraries(

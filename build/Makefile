@@ -276,6 +276,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/networking/tcp_server.o: src/networking/tcp_server.cpp.o
+.PHONY : src/networking/tcp_server.o
+
+# target to build an object file
+src/networking/tcp_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/networking/tcp_server.cpp.o
+.PHONY : src/networking/tcp_server.cpp.o
+
+src/networking/tcp_server.i: src/networking/tcp_server.cpp.i
+.PHONY : src/networking/tcp_server.i
+
+# target to preprocess a source file
+src/networking/tcp_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/networking/tcp_server.cpp.i
+.PHONY : src/networking/tcp_server.cpp.i
+
+src/networking/tcp_server.s: src/networking/tcp_server.cpp.s
+.PHONY : src/networking/tcp_server.s
+
+# target to generate assembly for a file
+src/networking/tcp_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/networking/tcp_server.cpp.s
+.PHONY : src/networking/tcp_server.cpp.s
+
 src/parser/parser.o: src/parser/parser.cpp.o
 .PHONY : src/parser/parser.o
 
@@ -444,6 +468,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/networking/tcp_server.o"
+	@echo "... src/networking/tcp_server.i"
+	@echo "... src/networking/tcp_server.s"
 	@echo "... src/parser/parser.o"
 	@echo "... src/parser/parser.i"
 	@echo "... src/parser/parser.s"
