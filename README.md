@@ -1,45 +1,263 @@
+````markdown
 # Redix
 
-A Redis-inspired in-memory key-value store built from scratch in modern C++20.
+> A Redis-inspired in-memory key-value store built from scratch in modern C++20.
 
-Redix is a systems programming project focused on understanding how databases and network services are built internally. Instead of relying on existing frameworks, the project incrementally implements command parsing, request execution, storage management, testing infrastructure, and eventually networking, persistence, and concurrency.
+Redix is a systems programming project whose goal is to understand and implement the core components behind high-performance backend systems rather than simply recreating Redis features.
 
----
-
-## Motivation
-
-Redis is one of the most widely used in-memory databases and caching systems.
-
-The goal of Redix is not to clone Redis feature-for-feature, but to learn the underlying engineering principles behind:
-
-* Request parsing
-* Command execution
-* In-memory data structures
-* Client-server communication
-* Network programming
-* Persistence
-* Concurrency
-* Database architecture
-
-This project is being built incrementally with an emphasis on clean architecture, testing, and documentation.
+The project is being developed incrementally, with every phase introducing one new architectural concept while maintaining clean separation of concerns, comprehensive unit tests, and production-style project organization.
 
 ---
 
-## Current Features
+## Why Redix?
 
-### Commands
+Modern backend systems like Redis demonstrate several important systems programming concepts:
 
-| Command         | Description         |
-| --------------- | ------------------- |
-| `PING`          | Health check        |
-| `SET key value` | Store a value       |
-| `GET key`       | Retrieve a value    |
-| `DEL key`       | Delete a key        |
-| `EXISTS key`    | Check key existence |
+- Efficient in-memory storage
+- TCP networking
+- Command parsing
+- Request processing pipelines
+- Event-driven architecture
+- Concurrency
+- Persistence
+- Distributed systems
 
-### Example
+Instead of implementing everything at once, Redix builds these features layer by layer to better understand the design decisions behind each component.
+
+---
+
+# Current Features
+
+## Command Parser
+
+Supports the following commands:
+
+| Command | Description |
+|----------|-------------|
+| `PING` | Health check |
+| `SET key value` | Store or overwrite a value |
+| `GET key` | Retrieve a value |
+| `DEL key` | Delete a key |
+| `EXISTS key` | Check whether a key exists |
+
+Parser capabilities:
+
+- Case-insensitive commands
+- Arity validation
+- Unknown command detection
+- Empty input detection
+- Structured `Command` representation
+
+---
+
+## In-Memory Storage
+
+Implemented using:
+
+```cpp
+std::unordered_map<std::string, std::string>
+```
+
+Supported operations:
+
+- set()
+- get()
+- del()
+- exists()
+
+The storage layer is intentionally independent from parsing, networking, and protocol logic.
+
+---
+
+## Command Execution
+
+A dedicated `CommandExecutor` converts parsed commands into application responses.
+
+Examples:
+
+| Request | Response |
+|----------|----------|
+| `PING` | `PONG` |
+| `SET name harsh` | `OK` |
+| `GET name` | `harsh` |
+| `GET unknown` | `NIL` |
+| `DEL name` | `1` |
+| `EXISTS name` | `1` |
+
+Error responses:
+
+```
+ERR empty input
+ERR unknown command
+ERR invalid arity
+```
+
+---
+
+## Request Pipeline
+
+Networking is intentionally separated from business logic.
+
+```
+Raw Request
+      │
+      ▼
+ RequestHandler
+      │
+      ▼
+    Parser
+      │
+      ▼
+CommandExecutor
+      │
+      ▼
+ KeyValueStore
+      │
+      ▼
+  Response
+```
+
+---
+
+## TCP Server
+
+Current implementation:
+
+- POSIX sockets
+- Blocking I/O
+- IPv4
+- One client connection at a time
+- One request per connection
+- Line-based text protocol
+
+Server lifecycle:
+
+```
+socket()
+setsockopt()
+bind()
+listen()
+accept()
+recv()
+RequestHandler
+send()
+close()
+```
+
+Default configuration:
+
+| Setting | Value |
+|---------|------|
+| Host | `127.0.0.1` |
+| Port | `6379` |
+| Buffer Size | `4096 bytes` |
+
+---
+
+# Project Structure
 
 ```text
+redix/
+├── docs/
+│   ├── architecture.md
+│   ├── networking.md
+│   ├── protocol.md
+│   └── storage.md
+│
+├── src/
+│   ├── core/
+│   │   ├── command_executor.*
+│   │   └── request_handler.*
+│   │
+│   ├── networking/
+│   │   └── tcp_server.*
+│   │
+│   ├── parser/
+│   │   ├── command.hpp
+│   │   ├── parser.hpp
+│   │   └── parser.cpp
+│   │
+│   ├── storage/
+│   │   ├── key_value_store.hpp
+│   │   └── key_value_store.cpp
+│   │
+│   └── main.cpp
+│
+├── tests/
+│   ├── parser_tests.cpp
+│   ├── storage_tests.cpp
+│   ├── command_executor_tests.cpp
+│   └── request_handler_tests.cpp
+│
+├── CMakeLists.txt
+└── README.md
+```
+
+---
+
+# Building
+
+Requirements:
+
+- C++20 compiler
+- CMake 3.20+
+- macOS or Linux
+
+Build:
+
+```bash
+cmake -S . -B build
+cmake --build build
+```
+
+---
+
+# Running
+
+Start the server:
+
+```bash
+./bin/redix
+```
+
+Expected output:
+
+```
+Redix listening on 127.0.0.1:6379
+```
+
+---
+
+# Testing
+
+Run all tests using CTest:
+
+```bash
+ctest --test-dir build
+```
+
+Or execute each test suite individually:
+
+```bash
+./bin/redix_parser_tests
+./bin/redix_storage_tests
+./bin/redix_executor_tests
+./bin/redix_request_handler_tests
+```
+
+---
+
+# Manual Testing
+
+Using Netcat:
+
+```bash
+nc 127.0.0.1 6379
+```
+
+Example session:
+
+```
 PING
 PONG
 
@@ -61,247 +279,97 @@ NIL
 
 ---
 
-## Protocol
+# Design Principles
 
-Redix v0 currently uses a simple line-based text protocol.
+Redix follows a few guiding principles throughout development.
 
-### Rules
-
-* Commands are case-insensitive.
-* Keys are case-sensitive.
-* Values cannot contain spaces in v0.
-* Commands are separated by whitespace.
-* Responses are plain text.
-
-### Errors
-
-```text
-ERR empty input
-ERR unknown command
-ERR invalid arity
-```
+- Separation of concerns
+- Incremental architecture
+- Unit-test driven development
+- Modern C++20 practices
+- Readable and maintainable code
+- Clear module boundaries before optimization
 
 ---
 
-## Architecture
+# Current Limitations
 
-### Request Processing Pipeline
+Current implementation intentionally keeps networking simple.
 
-```text
-Raw Input
-    ↓
-RequestHandler
-    ↓
-Parser
-    ↓
-CommandExecutor
-    ↓
-KeyValueStore
-    ↓
-Response String
-```
+- Blocking sockets
+- Single-threaded
+- One request per connection
+- No RESP protocol
+- No persistence
+- No TTL
+- No replication
+- No clustering
+- No authentication
+- No transactions
 
-### Components
-
-#### Parser
-
-Responsible for converting raw text into structured commands.
-
-Example:
-
-```text
-SET name harsh
-```
-
-becomes:
-
-```text
-CommandType::Set
-["name", "harsh"]
-```
+These limitations are deliberate to keep each development phase focused.
 
 ---
 
-#### CommandExecutor
+# Roadmap
 
-Responsible for executing parsed commands and generating responses.
+### Phase 1 (Completed)
 
-Example:
+- Command parser
+- Key-value storage
+- Command executor
+- Request handler
+- Blocking TCP server
+- Unit tests
 
-```text
-GET name
-```
+### Phase 2
 
-becomes:
+- Multiple commands per connection
+- Proper line buffering
+- Partial read/write handling
 
-```text
-harsh
-```
+### Phase 3
 
----
+- RESP protocol
+- Better protocol framing
 
-#### KeyValueStore
+### Phase 4
 
-In-memory storage engine built on top of:
+- Thread-per-client architecture
+- Synchronization primitives
 
-```cpp
-std::unordered_map<std::string, std::string>
-```
+### Phase 5
 
-Provides:
+- Event-driven networking (`poll`, `epoll`, `kqueue`)
 
-```cpp
-set(key, value)
-get(key)
-del(key)
-exists(key)
-```
+### Phase 6
 
----
+- Persistence (RDB / AOF)
 
-#### RequestHandler
+### Phase 7
 
-Coordinates the parser and executor.
-
-This layer allows future networking code to remain simple:
-
-```cpp
-response = handler.handleLine(request);
-```
+- Replication
+- Configuration system
+- Performance benchmarking
 
 ---
 
-## Project Structure
+# Learning Objectives
 
-```text
-redix/
-│
-├── docs/
-│   ├── architecture.md
-│   ├── protocol.md
-│   └── storage.md
-│
-├── src/
-│   ├── parser/
-│   │   ├── command.hpp
-│   │   ├── parser.hpp
-│   │   └── parser.cpp
-│   │
-│   ├── storage/
-│   │   ├── key_value_store.hpp
-│   │   └── key_value_store.cpp
-│   │
-│   ├── core/
-│   │   ├── command_executor.hpp
-│   │   ├── command_executor.cpp
-│   │   ├── request_handler.hpp
-│   │   └── request_handler.cpp
-│   │
-│   └── main.cpp
-│
-├── tests/
-│   ├── parser_tests.cpp
-│   ├── storage_tests.cpp
-│   ├── command_executor_tests.cpp
-│   └── request_handler_tests.cpp
-│
-├── CMakeLists.txt
-└── README.md
-```
+This project is intended to gain practical experience with:
 
----
-
-## Building
-
-### Requirements
-
-* C++20
-* CMake 3.20+
-* Clang or GCC
-
-### Build
-
-```bash
-cmake -S . -B build
-cmake --build build
-```
-
----
-
-## Running Tests
-
-### Individual Test Suites
-
-```bash
-./bin/redix_parser_tests
-./bin/redix_storage_tests
-./bin/redix_executor_tests
-./bin/redix_request_handler_tests
-```
-
-### CTest
-
-```bash
-ctest --test-dir build
-```
-
----
-
-## Development Principles
-
-* Modern C++20
-* Separation of concerns
-* Test-driven development
-* Incremental system design
-* Minimal external dependencies
-* Clean architecture
-
----
-
-## Roadmap
-
-### Completed
-
-* Command parser
-* In-memory storage engine
-* Command executor
-* Request handler
-* Unit tests
-* Integration tests
-
-### In Progress
-
-* Networking layer
-* TCP server
-* Client connections
-
-### Planned
-
-* RESP protocol support
-* Persistence
-* Snapshots
-* Expiration (TTL)
-* Multi-client support
-* Thread safety
-* Benchmarking
-* Replication
-* Pub/Sub
-
----
-
-## Learning Goals
-
-This project is primarily an educational exploration of:
-
-* Systems Programming
-* Database Internals
-* Network Programming
-* Modern C++
-* Software Architecture
-* Testing and Tooling
+- Modern C++20
+- Systems programming
+- POSIX networking
+- Socket programming
+- Software architecture
+- Testable application design
+- Build systems (CMake)
+- Backend infrastructure fundamentals
 
 ---
 
 ## License
 
-MIT License
+This project is developed as a learning exercise inspired by Redis. It is not intended to be a production replacement for Redis.
+````
