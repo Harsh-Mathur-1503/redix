@@ -2,29 +2,17 @@
 #include "networking/tcp_server.hpp"
 #include "storage/key_value_store.hpp"
 
-#include <exception>
-#include <iostream>
 #include <cstdlib>
 
 int main()
 {
-    try
+    redix::KeyValueStore store;
+    redix::RequestHandler handler(store);
+
+    redix::TcpServer server(handler);
+
+    if (!server.run())
     {
-        redix::KeyValueStore store;
-
-        redix::RequestHandler handler(store);
-
-        redix::TcpServer server(handler);
-
-        server.run();
-    }
-    catch (const std::exception& exception)
-    {
-        std::cerr
-            << "Fatal error: "
-            << exception.what()
-            << '\n';
-
         return EXIT_FAILURE;
     }
 

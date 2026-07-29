@@ -8,6 +8,12 @@
 namespace redix
 {
 
+    namespace
+    {
+    constexpr int BACKLOG = 5;
+    constexpr std::size_t BUFFER_SIZE = 4096;
+    }
+
 class TcpServer
 {
 public:
@@ -24,9 +30,32 @@ public:
     TcpServer(TcpServer&&) = delete;
     TcpServer& operator=(TcpServer&&) = delete;
 
-    void run();
+    [[nodiscard]]
+    bool run();
 
 private:
+    static constexpr std::size_t MAX_REQUEST_SIZE = 4096;
+
+    enum class ReadRequestStatus
+    {
+        Complete,
+        ClientDisconnected,
+        TooLarge,
+        Error
+    };
+
+    void handleClient(int client_socket);
+
+    [[nodiscard]]
+    ReadRequestStatus readRequest(
+        int client_socket,
+        std::string& request);
+
+    [[nodiscard]]
+    bool sendAll(
+        int client_socket,
+        const std::string& response);
+
     RequestHandler& handler_;
 
     std::string host_;
