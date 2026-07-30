@@ -1,4 +1,3 @@
-
 # Networking Design (v0)
 
 ## Overview
@@ -108,28 +107,16 @@ Each stage has a dedicated responsibility:
 
 # Request Lifecycle
 
-Each client request follows the pipeline below.
+1. Client connects.
+2. TcpServer accepts the connection.
+3. readRequest() accumulates bytes until a newline is received.
+4. The completed request is forwarded to RequestHandler.
+5. Parser converts text into a Command.
+6. CommandExecutor executes the request.
+7. KeyValueStore performs any storage operations.
+8. sendAll() transmits the complete response.
+9. Client socket closes.
 
-```text
-Client connects
-        │
-        ▼
-Receive request line
-        │
-        ▼
-RequestHandler::handleLine()
-        │
-        ▼
-Generate response
-        │
-        ▼
-Send response
-        │
-        ▼
-Close client connection
-```
-
-In v0, each TCP connection is expected to contain exactly one request.
 
 ---
 
@@ -150,19 +137,13 @@ Future versions may introduce structured error handling and logging.
 
 # Current Limitations
 
-The initial networking implementation intentionally favors simplicity over completeness.
-
-Current limitations include:
-
-* Blocking I/O.
-* One request per connection.
-* IPv4 only.
-* Single client at a time.
-* Fixed-size receive buffer.
-* Assumes an entire request is received in a single `recv()` call.
-* Assumes `send()` transmits the complete response in one call.
-
-These assumptions simplify the implementation and allow the networking model to be understood before introducing more advanced concepts.
+- Blocking server
+- Single-threaded
+- One request per connection
+- Maximum request size: 4096 bytes
+- No RESP support
+- No persistent client connections
+- No command pipelining
 
 ---
 

@@ -2,6 +2,8 @@ BasedOnStyle: LLVM
 
 Language: Cpp
 
+Standard: Latest
+
 IndentWidth: 4
 TabWidth: 4
 UseTab: Never
@@ -13,9 +15,9 @@ ReferenceAlignment: Left
 
 BreakBeforeBraces: Allman
 
-AllShortFunctionsOnASingleLine: false
-AllShortIfStatementsOnASingleLine: false
-AllShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
 
 SortIncludes: false
 
@@ -23,11 +25,12 @@ NamespaceIndentation: All
 
 AccessModifierOffset: -4
 
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
+AlignConsecutiveAssignments:
+  Enabled: true
+
+AlignConsecutiveDeclarations:
+  Enabled: true
 
 SpaceBeforeParens: ControlStatements
 
 Cpp11BracedListStyle: true
-
-Standard: Latest

@@ -8,11 +8,11 @@
 namespace redix
 {
 
-    namespace
-    {
-    constexpr int BACKLOG = 5;
-    constexpr std::size_t BUFFER_SIZE = 4096;
-    }
+    // namespace
+    // {
+    // constexpr int BACKLOG = 5;
+    // constexpr std::size_t BUFFER_SIZE = 4096;
+    // }
 
 class TcpServer
 {

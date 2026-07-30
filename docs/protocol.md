@@ -313,6 +313,36 @@ ERR unknown command
 
 ---
 
+
+
+## Request Framing
+
+A request is terminated by a single newline (`\n`).
+
+Windows-style line endings (`\r\n`) are accepted.
+
+Maximum request length is 4096 bytes excluding the newline.
+
+Requests exceeding this limit receive:
+
+ERR request too large
+
+and the server closes the connection.
+
+Only the first complete request line is processed for each TCP connection.
+
+Any bytes following the first newline are ignored because Redix v0 closes the connection after responding.
+
+
+
+
+
+
+
+
+
+
+
 ## Design Constraints (v0)
 
 The following limitations are intentionally accepted for the first version:
