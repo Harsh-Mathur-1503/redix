@@ -155,57 +155,103 @@ namespace redix
 
     void TcpServer::handleClient(int client_socket)
     {
-        std::string       request;
-        ReadRequestStatus status = readRequest(client_socket, request);
-
-        switch (status)
+        std::string input_buffer;
+        // Process one command at a time until the client
+        // disconnects or an error occurs.
+        while (true)
         {
-
-        case ReadRequestStatus::Complete:
-        {
-            std::string response = handler_.handleLine(request);
-            response.push_back('\n');
-
-            if (!sendAll(client_socket, response))
+            std::string       request;
+            ReadRequestStatus status = readRequest(client_socket, input_buffer, request);
+            switch (status)
             {
-                std::cerr << "Failed to send response to client.\n";
+            case ReadRequestStatus::Complete:
+            {
+                std::string response = handler_.handleLine(request);
+                response.push_back('\n');
+                if (!sendAll(client_socket, response))
+                {
+                    close(client_socket);
+                    return;
+                }
             }
             break;
-        }
 
-        case ReadRequestStatus::TooLarge:
-        {
-            sendAll(client_socket, "ERR request too large\n");
-            break;
-        }
+            case ReadRequestStatus::TooLarge:
+            {
+                (void)sendAll(client_socket, "ERR request too large\n");
+                close(client_socket);
+            }
 
-        case ReadRequestStatus::ClientDisconnected:
-        {
-            // Client close the connection before
-            // sending a complete request
-            break;
+            case ReadRequestStatus::ClientDisconnected:
+            case ReadRequestStatus::Error:
+            {
+                close(client_socket);
+                return;
+            }
+            }
         }
-
-        case ReadRequestStatus::Error:
-        {
-            // readRequest() already logged the error.
-            break;
-        }
-        }
-        close(client_socket);
     }
 
-    TcpServer::ReadRequestStatus TcpServer::readRequest(int client_socket, std::string& request)
+    TcpServer::ReadRequestStatus
+    TcpServer::readRequest(int client_socket, std::string& input_buffer, std::string& request)
     {
         request.clear();
+
         char buffer[BUFFER_SIZE];
 
         while (true)
         {
-            ssize_t bytes_received = recv(client_socket, buffer, sizeof(buffer), 0);
+            // First, check whether we already have
+            // a complete request buffered.
+            std::size_t newline_pos = input_buffer.find('\n');
 
-            if (bytes_received < 0)
+            if (newline_pos != std::string::npos)
             {
+                // Payload length excludes '\n'
+                if (newline_pos > MAX_REQUEST_SIZE)
+                {
+                    return ReadRequestStatus::TooLarge;
+                }
+
+                request = input_buffer.substr(0, newline_pos);
+
+                // Remove optional '\r'
+                if (!request.empty() && request.back() == '\r')
+                {
+                    request.pop_back();
+                }
+
+                // Remove:
+                // request + '\n'
+                // Preserve remaining bytes for the next call.
+                input_buffer.erase(0, newline_pos + 1);
+
+                return ReadRequestStatus::Complete;
+            }
+
+            // No complete line yet.
+            // Allow:
+            //   4096 payload bytes
+            //   optional '\r'
+            if (input_buffer.size() > MAX_REQUEST_SIZE)
+            {
+                if (!(input_buffer.size() == MAX_REQUEST_SIZE + 1 && input_buffer.back() == '\r'))
+                {
+                    return ReadRequestStatus::TooLarge;
+                }
+            }
+
+            ssize_t bytes_received;
+
+            while (true)
+            {
+                bytes_received = recv(client_socket, buffer, sizeof(buffer), 0);
+
+                if (bytes_received >= 0)
+                {
+                    break;
+                }
+
                 if (errno == EINTR)
                 {
                     continue;
@@ -220,42 +266,9 @@ namespace redix
                 return ReadRequestStatus::ClientDisconnected;
             }
 
-            request.append(buffer, static_cast<std::size_t>(bytes_received));
-
-            std::size_t newline_pos = request.find('\n');
-
-            if (newline_pos != std::string::npos)
-            {
-                // Reject requests whose payload (excluding '\n)
-                // exceeds the maximum allowed size
-                if (newline_pos > MAX_REQUEST_SIZE)
-                {
-                    return ReadRequestStatus::TooLarge;
-                }
-
-                // v0 processes only the first complete request line.
-                // Any bytes after the first '\n' are discarded because
-                // the connection is closed after one request.
-                request.erase(newline_pos);
-
-                // Remove optional '\r'
-                if (!request.empty() && request.back() == '\r')
-                {
-                    request.pop_back();
-                }
-
-                return ReadRequestStatus::Complete;
-            }
-
-            // No newline yet.
-            // Entire accumulates request counts toward limit.
-            if (request.size() > MAX_REQUEST_SIZE)
-            {
-                return ReadRequestStatus::TooLarge;
-            }
+            input_buffer.append(buffer, static_cast<std::size_t>(bytes_received));
         }
     }
-
     bool TcpServer::sendAll(int client_socket, const std::string& response)
     {
         std::size_t total_sent = 0;
