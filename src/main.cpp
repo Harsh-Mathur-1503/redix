@@ -6,7 +6,7 @@
 
 int main()
 {
-    redix::KeyValueStore store;
+    redix::KeyValueStore  store;
     redix::RequestHandler handler(store);
 
     redix::TcpServer server(handler);

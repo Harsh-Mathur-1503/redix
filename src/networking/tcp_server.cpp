@@ -15,8 +15,9 @@ namespace redix
     namespace
     {
 
-        constexpr int         BACKLOG     = 5;
-        constexpr std::size_t BUFFER_SIZE = 4096;
+        constexpr int         BACKLOG          = 5;
+        constexpr std::size_t RECV_BUFFER_SIZE = 4096;
+        char                  buffer[BUFFER_SIZE];
 
     } // namespace
 
@@ -180,6 +181,7 @@ namespace redix
             {
                 (void)sendAll(client_socket, "ERR request too large\n");
                 close(client_socket);
+                return;
             }
 
             case ReadRequestStatus::ClientDisconnected:
@@ -207,23 +209,23 @@ namespace redix
 
             if (newline_pos != std::string::npos)
             {
-                // Payload length excludes '\n'
-                if (newline_pos > MAX_REQUEST_SIZE)
+                std::size_t payload_length = newline_pos;
+
+                // Exclude optional '\r' from the payload length.
+                if (payload_length > 0 && input_buffer[payload_length - 1] == '\r')
+                {
+                    --payload_length;
+                }
+
+                if (payload_length > MAX_REQUEST_SIZE)
                 {
                     return ReadRequestStatus::TooLarge;
                 }
 
-                request = input_buffer.substr(0, newline_pos);
+                request = input_buffer.substr(0, payload_length);
 
-                // Remove optional '\r'
-                if (!request.empty() && request.back() == '\r')
-                {
-                    request.pop_back();
-                }
-
-                // Remove:
-                // request + '\n'
-                // Preserve remaining bytes for the next call.
+                // Remove the processed request and its '\n'.
+                // Preserve any later bytes for the next request.
                 input_buffer.erase(0, newline_pos + 1);
 
                 return ReadRequestStatus::Complete;
