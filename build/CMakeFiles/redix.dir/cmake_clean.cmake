@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "/Users/harsh/Developer/redix/bin/redix.pdb"
   "CMakeFiles/redix.dir/src/main.cpp.o"
   "CMakeFiles/redix.dir/src/main.cpp.o.d"
+  "CMakeFiles/redix.dir/src/networking/line_framer.cpp.o"
+  "CMakeFiles/redix.dir/src/networking/line_framer.cpp.o.d"
   "CMakeFiles/redix.dir/src/networking/tcp_server.cpp.o"
   "CMakeFiles/redix.dir/src/networking/tcp_server.cpp.o.d"
 )

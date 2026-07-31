@@ -204,6 +204,19 @@ redix_request_handler_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_request_handler_tests.dir/build.make CMakeFiles/redix_request_handler_tests.dir/build
 .PHONY : redix_request_handler_tests/fast
 
+#=============================================================================
+# Target rules for targets named redix_line_framer_tests
+
+# Build rule for target.
+redix_line_framer_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 redix_line_framer_tests
+.PHONY : redix_line_framer_tests
+
+# fast build rule for target.
+redix_line_framer_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_line_framer_tests.dir/build.make CMakeFiles/redix_line_framer_tests.dir/build
+.PHONY : redix_line_framer_tests/fast
+
 src/core/command_executor.o: src/core/command_executor.cpp.o
 .PHONY : src/core/command_executor.o
 
@@ -275,6 +288,33 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/networking/line_framer.o: src/networking/line_framer.cpp.o
+.PHONY : src/networking/line_framer.o
+
+# target to build an object file
+src/networking/line_framer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/networking/line_framer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_line_framer_tests.dir/build.make CMakeFiles/redix_line_framer_tests.dir/src/networking/line_framer.cpp.o
+.PHONY : src/networking/line_framer.cpp.o
+
+src/networking/line_framer.i: src/networking/line_framer.cpp.i
+.PHONY : src/networking/line_framer.i
+
+# target to preprocess a source file
+src/networking/line_framer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/networking/line_framer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_line_framer_tests.dir/build.make CMakeFiles/redix_line_framer_tests.dir/src/networking/line_framer.cpp.i
+.PHONY : src/networking/line_framer.cpp.i
+
+src/networking/line_framer.s: src/networking/line_framer.cpp.s
+.PHONY : src/networking/line_framer.s
+
+# target to generate assembly for a file
+src/networking/line_framer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix.dir/build.make CMakeFiles/redix.dir/src/networking/line_framer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_line_framer_tests.dir/build.make CMakeFiles/redix_line_framer_tests.dir/src/networking/line_framer.cpp.s
+.PHONY : src/networking/line_framer.cpp.s
 
 src/networking/tcp_server.o: src/networking/tcp_server.cpp.o
 .PHONY : src/networking/tcp_server.o
@@ -372,6 +412,30 @@ tests/command_executor_tests.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_executor_tests.dir/build.make CMakeFiles/redix_executor_tests.dir/tests/command_executor_tests.cpp.s
 .PHONY : tests/command_executor_tests.cpp.s
 
+tests/line_framer_tests.o: tests/line_framer_tests.cpp.o
+.PHONY : tests/line_framer_tests.o
+
+# target to build an object file
+tests/line_framer_tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_line_framer_tests.dir/build.make CMakeFiles/redix_line_framer_tests.dir/tests/line_framer_tests.cpp.o
+.PHONY : tests/line_framer_tests.cpp.o
+
+tests/line_framer_tests.i: tests/line_framer_tests.cpp.i
+.PHONY : tests/line_framer_tests.i
+
+# target to preprocess a source file
+tests/line_framer_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_line_framer_tests.dir/build.make CMakeFiles/redix_line_framer_tests.dir/tests/line_framer_tests.cpp.i
+.PHONY : tests/line_framer_tests.cpp.i
+
+tests/line_framer_tests.s: tests/line_framer_tests.cpp.s
+.PHONY : tests/line_framer_tests.s
+
+# target to generate assembly for a file
+tests/line_framer_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/redix_line_framer_tests.dir/build.make CMakeFiles/redix_line_framer_tests.dir/tests/line_framer_tests.cpp.s
+.PHONY : tests/line_framer_tests.cpp.s
+
 tests/parser_tests.o: tests/parser_tests.cpp.o
 .PHONY : tests/parser_tests.o
 
@@ -456,6 +520,7 @@ help:
 	@echo "... redix"
 	@echo "... redix_core"
 	@echo "... redix_executor_tests"
+	@echo "... redix_line_framer_tests"
 	@echo "... redix_parser_tests"
 	@echo "... redix_request_handler_tests"
 	@echo "... redix_storage_tests"
@@ -468,6 +533,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/networking/line_framer.o"
+	@echo "... src/networking/line_framer.i"
+	@echo "... src/networking/line_framer.s"
 	@echo "... src/networking/tcp_server.o"
 	@echo "... src/networking/tcp_server.i"
 	@echo "... src/networking/tcp_server.s"
@@ -480,6 +548,9 @@ help:
 	@echo "... tests/command_executor_tests.o"
 	@echo "... tests/command_executor_tests.i"
 	@echo "... tests/command_executor_tests.s"
+	@echo "... tests/line_framer_tests.o"
+	@echo "... tests/line_framer_tests.i"
+	@echo "... tests/line_framer_tests.s"
 	@echo "... tests/parser_tests.o"
 	@echo "... tests/parser_tests.i"
 	@echo "... tests/parser_tests.s"

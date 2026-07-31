@@ -54,7 +54,6 @@ target_include_directories(
     PUBLIC
     ${PROJECT_SOURCE_DIR}/src
 )
-
 # ---------------------------------------------------------
 # Main Executable
 # ---------------------------------------------------------
@@ -63,6 +62,7 @@ add_executable(
     redix
     src/main.cpp
     src/networking/tcp_server.cpp
+    src/networking/line_framer.cpp
 )
 
 target_link_libraries(
@@ -71,31 +71,6 @@ target_link_libraries(
     redix_core
 )
 
-# ---------------------------------------------------------
-# Test Executable
-# ---------------------------------------------------------
-
-enable_testing()
-
-add_test(
-    NAME parser_tests
-    COMMAND redix_parser_tests
-)
-
-add_test(
-    NAME storage_tests
-    COMMAND redix_storage_tests
-)
-
-add_test(
-    NAME executor_tests
-    COMMAND redix_executor_tests
-)
-
-add_test(
-    NAME request_handler_tests
-    COMMAND redix_request_handler_tests
-)
 # ---------------------------------------------------------
 # Parser Tests
 # ---------------------------------------------------------
@@ -125,7 +100,6 @@ target_link_libraries(
     PRIVATE
     redix_core
 )
-
 
 # ---------------------------------------------------------
 # Command Executor Tests
@@ -158,6 +132,53 @@ target_link_libraries(
 )
 
 # ---------------------------------------------------------
+# Line Framer Tests
+# ---------------------------------------------------------
+
+add_executable(
+    redix_line_framer_tests
+    tests/line_framer_tests.cpp
+    src/networking/line_framer.cpp
+)
+
+target_include_directories(
+    redix_line_framer_tests
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
+)
+
+# ---------------------------------------------------------
+# Tests
+# ---------------------------------------------------------
+
+enable_testing()
+
+add_test(
+    NAME parser_tests
+    COMMAND redix_parser_tests
+)
+
+add_test(
+    NAME storage_tests
+    COMMAND redix_storage_tests
+)
+
+add_test(
+    NAME executor_tests
+    COMMAND redix_executor_tests
+)
+
+add_test(
+    NAME request_handler_tests
+    COMMAND redix_request_handler_tests
+)
+
+add_test(
+    NAME line_framer_tests
+    COMMAND redix_line_framer_tests
+)
+
+# ---------------------------------------------------------
 # Sanitizers
 # ---------------------------------------------------------
 
@@ -165,7 +186,7 @@ option(ENABLE_SANITIZERS "Enable sanitizers" OFF)
 
 if(ENABLE_SANITIZERS AND CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-    foreach(target redix redix_core redix_parser_tests redix_storage_tests redix_executor_tests redix_request_handler_tests)
+    foreach(target redix redix_core redix_parser_tests redix_storage_tests redix_executor_tests redix_request_handler_tests redix_line_framer_tests)
 
         target_compile_options(
             ${target}
@@ -195,6 +216,7 @@ set_target_properties(
     redix_storage_tests
     redix_executor_tests
     redix_request_handler_tests
+    redix_line_framer_tests
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY
     ${PROJECT_SOURCE_DIR}/bin

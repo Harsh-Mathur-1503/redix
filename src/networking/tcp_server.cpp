@@ -17,7 +17,6 @@ namespace redix
 
         constexpr int         BACKLOG          = 5;
         constexpr std::size_t RECV_BUFFER_SIZE = 4096;
-        char                  buffer[BUFFER_SIZE];
 
     } // namespace
 
@@ -199,7 +198,7 @@ namespace redix
     {
         request.clear();
 
-        char buffer[BUFFER_SIZE];
+        char buffer[RECV_BUFFER_SIZE];
 
         while (true)
         {
