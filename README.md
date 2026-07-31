@@ -1,4 +1,3 @@
-````markdown
 # Redix
 
 > A Redis-inspired in-memory key-value store built from scratch in modern C++20.
@@ -356,4 +355,3 @@ These limitations are deliberate to keep each development phase focused.
 ## License
 
 This project is developed as a learning exercise inspired by Redis. It is not intended to be a production replacement for Redis.
-````
