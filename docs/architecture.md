@@ -21,13 +21,13 @@ Future iterations will progressively introduce persistence, concurrency, efficie
 
 Redix v0 supports a small set of string-based commands.
 
-| Command | Arguments | Description |
-|----------|-----------|-------------|
-| `PING` | none | Health check |
-| `SET` | `key value` | Store or overwrite a value |
-| `GET` | `key` | Retrieve a value |
-| `DEL` | `key` | Delete a key |
-| `EXISTS` | `key` | Check whether a key exists |
+| Command    | Arguments     | Description                |
+| ---------- | ------------- | -------------------------- |
+| `PING`   | none          | Health check               |
+| `SET`    | `key value` | Store or overwrite a value |
+| `GET`    | `key`       | Retrieve a value           |
+| `DEL`    | `key`       | Delete a key               |
+| `EXISTS` | `key`       | Check whether a key exists |
 
 ---
 
@@ -270,6 +270,7 @@ Current test suites include:
 - Storage tests
 - Command executor tests
 - Request handler tests
+- Line Framer tests
 
 This layered testing approach ensures business logic can be verified without requiring network communication.
 
